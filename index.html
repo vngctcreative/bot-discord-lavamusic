@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trạng Thái Bot</title>
+    <style>
+        body {
+            background-image: url('https://media.discordapp.net/attachments/1209084745498230856/1247110131758403584/banner-discord-developer-server.jpg?ex=66b28c91&is=66b13b11&hm=2f556f407093bcf6560851a9102917ee3bf0cd578fdd1361b12808d32179a243&=&format=webp');
+            background-size: cover;
+            background-repeat: no-repeat;
+            color: white;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: rgba(0, 0, 0, 0.8);
+            padding: 20px;
+            text-align: center;
+            color: white;
+        }
+        footer {
+            background-color: rgba(0, 0, 0, 0.8);
+            padding: 10px;
+            text-align: center;
+            color: white;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+            left: 0;
+        }
+        .container {
+            margin: 50px auto;
+            padding: 20px;
+            background-color: rgba(0, 0, 0, 0.7);
+            border-radius: 10px;
+            width: 80%;
+            max-width: 1200px;
+            position: relative;
+        }
+        .menu {
+            margin-bottom: 20px;
+            padding: 10px;
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            text-align: center;
+        }
+        .menu a {
+            color: white;
+            text-decoration: none;
+            font-size: 1.2em;
+            margin: 0 15px;
+            padding: 10px;
+            border-radius: 5px;
+            transition: background-color 0.3s, text-decoration 0.3s;
+        }
+        .menu a:hover {
+            background-color: rgba(255, 255, 255, 0.3);
+            text-decoration: underline;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        .status-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        #status {
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+        .guild-list {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            text-align: left;
+        }
+        .guild-list h2 {
+            font-size: 1.8em;
+            margin-bottom: 10px;
+        }
+        .guild-list ul {
+            list-style: none;
+            padding: 0;
+        }
+        .guild-list li {
+            font-size: 1.2em;
+            padding: 5px 0;
+        }
+    </style>
+</head>
+<body>
+        <div class="container">
+            <div class="menu">
+                <a href="#status" onclick="showTab('status-tab')">Trạng Thái</a>
+                <a href="#guilds" onclick="showTab('guilds-tab')">Danh Sách Máy Chủ</a>
+                <a href="#commands" onclick="showTab('commands-tab')">Lệnh Hỗ Trợ</a>
+            </div>
+
+            <div class="tab-content active" id="status-tab">
+                <h2 id="status" style="text-align: center;">Đang kiểm tra ...</h2>
+            </div>
+
+            <div class="tab-content" id="guilds-tab">
+                <h2 style="text-align: center;">Danh Sách Máy Chủ BOT đang tham gia</h2>
+                    <ul id="guilds-list"></ul>
+            </div>
+
+            <div class="tab-content" id="commands-tab">
+                <h2 style="text-align: center;">Danh Sách Lệnh Thực Hiện Với Bot</h2>
+
+                <div class="commands-category">
+                    <h3>Quản Lý Máy Chủ - chỉ dành cho Admin</h3>
+                    <ul>
+                        <li><strong>/ban</strong> 🚫 Cấm một người dùng khỏi server</li>
+                        <li><strong>/unban</strong> 🔓 Bỏ cấm một người dùng khỏi server</li>
+                        <li><strong>/clear_all</strong> 🗑️ Xoá toàn bộ các kênh trong server</li>
+                        <li><strong>/clear_category</strong> 📁 Xoá tất cả các kênh và danh mục trong một danh mục</li>
+                        <li><strong>/clear_chat</strong> 🧹 Xoá tin nhắn trong kênh hiện tại</li>
+                        <li><strong>/say</strong> 📣 Bot sẽ gửi tin nhắn do bạn nhập vào</li>
+                    </ul>
+                </div>
+                <div class="commands-category">
+                    <h3>Thông Tin và Trợ Giúp</h3>
+                    <ul>
+                        <li><strong>/about</strong> 📕 Hiển thị thông tin về bot</li>
+                        <li><strong>/help</strong> 📜 Hiển thị các lệnh hỗ trợ của BOT</li>
+                        <li><strong>/support</strong> 💬 Nhận liên kết đến máy chủ hỗ trợ</li>
+                        <li><strong>/report</strong> 📢 Gửi báo cáo lỗi đến kênh hỗ trợ</li>
+                        <li><strong>/avatar</strong> 📸 Lấy avatar của người dùng</li>
+                    </ul>
+                </div>
+                <div class="commands-category">
+                    <h3>Nhạc</h3>
+                    <ul>
+                        <li><strong>/play</strong> ⏯️ Phát bài hát dựa theo tên, link, danh sách từ người dùng cung cấp</li>
+                        <li><strong>/pause</strong> ⏸ Tạm dừng nhạc hiện tại</li>
+                        <li><strong>/resume</strong> ▶️ Tiếp tục phát nhạc hiện tại</li>
+                        <li><strong>/queue</strong> 📜 Kiểm tra danh sách nhạc hiện tại</li>
+                        <li><strong>/join</strong> ➡️ Tham gia kênh thoại</li>
+                        <li><strong>/leave</strong> ⬅️ Rời kênh thoại</li>
+                    </ul>
+                </div>
+                <div class="commands-category">
+                    <h3>Setup</h3>
+                    <ul>
+                        <li><strong>/setup_ticket</strong> 📩 Thiết lập hệ thống ticket</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+    <footer>
+        &copy; 2024 Coded By Creative
+    </footer>
+
+    <script>
+        async function fetchStatus() {
+            try {
+                const response = await fetch('/status');
+                const data = await response.json();
+                document.getElementById('status').textContent = data.status;
+                const guildsList = document.getElementById('guilds-list');
+                guildsList.innerHTML = '';
+                data.guilds.forEach(guild => {
+                    const li = document.createElement('li');
+                    li.textContent = guild;
+                    guildsList.appendChild(li);
+                });
+            } catch (error) {
+                document.getElementById('status').textContent = 'Lỗi khi tải trạng thái, có thể là Bot đang offline';
+                console.error(error);
+            }
+        }
+
+        async function fetchCommands() {
+            try {
+                const response = await fetch('/commands');
+                const data = await response.json();
+                const commandsList = document.getElementById('commands-list');
+                commandsList.innerHTML = '';
+                data.forEach(command => {
+                    const li = document.createElement('li');
+                    li.innerHTML = `<strong>${command.command}</strong> ${command.description}`;
+                    commandsList.appendChild(li);
+                });
+            } catch (error) {
+                console.error('Lỗi khi tải lệnh:', error);
+            }
+        }
+
+        function showTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.getElementById(tabId).classList.add('active');
+            if (tabId === 'commands-tab') {
+                fetchCommands();
+            }
+        }
+
+        fetchStatus();
+    </script>
+</body>
+</html>

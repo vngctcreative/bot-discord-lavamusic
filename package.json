@@ -1,0 +1,29 @@
+{
+  "name": "Server Management Bot",
+  "version": "1.0",
+  "description": "Music Bot",
+  "main": "index.js",
+  "dependencies": {
+    "axios": "^1.7.3",
+    "discord.js": "^14.15.3",
+    "dotenv": "^16.4.5",
+    "erela.js": "^2.4.0",
+    "express": "^4.19.2",
+    "ip": "^2.0.1",
+    "mewcard": "^1.7.6",
+    "node-fetch": "^3.3.2",
+    "os": "^0.1.2",
+    "public-ip": "^7.0.1",
+    "riffy": "^1.0.3",
+    "sharp": "^0.33.4",
+    "systeminformation": "^5.23.2"
+  },
+  "scripts": {
+    "start": "node index.js"
+  },
+  "author": "Creative",
+  "license": "XX",
+  "engines": {
+    "node": "20.x"
+  }
+}
